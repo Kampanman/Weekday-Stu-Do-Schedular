@@ -39,7 +39,7 @@ let scheduleViewer = Vue.component("view-schedules", {
     </div>
     <p></p>
     <div id="viewSheduleArea">
-      <p v-if="selects.records.length == 0 || isNonSearchedHit == true"
+      <p v-if="isNonSearchedHit == true"
         class="fader" :style="ownStyles.nonViewableArea + ownStyles.areaMargin">表示できるスケジュールはありません</p>
       <div id="sheduleContent" class="fader" v-else>
         <dl style="margin: 1em 0;" v-for="(item, index) of filtered" v-if="item.record != null">
@@ -174,6 +174,7 @@ let scheduleViewer = Vue.component("view-schedules", {
       filteredObject = null;
 
       this.filtered = reFiltered;
+      if(!this.isSearched) this.setSearchedHitByFiltered(reFiltered);
     },
     getDayOfWeekOfRequestDate(request) {
       let request_date = new Date(request);
@@ -233,7 +234,6 @@ let scheduleViewer = Vue.component("view-schedules", {
     },
     searchScheduleTask() {
       this.isSearched = true;
-      this.isNonSearchedHit = true;
       this.generateFilteredObject(this.selects);
 
       // 検索語が含まれているレコードに絞り込む
@@ -251,14 +251,18 @@ let scheduleViewer = Vue.component("view-schedules", {
       });
 
       // 検索語にヒットするレコードが1件もない場合は、そのメッセージを出すためのフラグを有効化する
-      for (let i = 0; i < reFiltered.length; i++){
-        if (reFiltered[i].record != null) {
+      this.setSearchedHitByFiltered(reFiltered);
+      this.filtered = reFiltered;
+    },
+    setSearchedHitByFiltered(object) {
+      // オブジェクト内にnullでないrecordがあればisNonSearchedHitをfalseにする
+      this.isNonSearchedHit = true;
+      for (let i = 0; i < object.length; i++){
+        if (object[i].record != null) {
           this.isNonSearchedHit = false;
           break;
         }
       }
-
-      this.filtered = reFiltered;
     },
     setStylesOfDl() {
       const deepBlueBorder = "3px solid rgb(20 40 200);";
