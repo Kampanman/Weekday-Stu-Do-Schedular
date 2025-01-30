@@ -1,0 +1,124 @@
+@charset "utf-8";
+
+/* [pages/ownMyPage]内のphpに共通で適用するstyle */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.dialog-container {
+  overflow: hidden !important;
+}
+
+header {
+  padding: 1em;
+  background-color: #00bfa5;
+}
+
+header>#headerAbove {
+  height: 120px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+header>#headerBottom p {
+  color: white;
+  font-size: 15px;
+  margin: 2.5px;
+  text-align: center;
+}
+
+.logo {
+  height: 80px;
+  box-shadow: 0 0 15px 8px #3fffec;
+}
+
+.headerIcon>.material-icons {
+  color: #fff;
+  cursor: pointer;
+  padding: 3px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+}
+
+.headerIcon>.material-icons:hover {
+  color: yellow;
+  border: 2px solid yellow;
+  box-shadow: 0 0 10px #fdff80;
+  text-shadow: 0 0 10px #fdff80;
+}
+
+main {
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+button,
+.toggle-button {
+  display: block;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px 0;
+}
+
+footer a,
+footer a:visited {
+  color: #4260ff;
+  text-decoration: none;
+}
+
+hr {
+  width: 96%;
+  margin: 0 auto;
+}
+
+.v-application--wrap {
+  min-height: 0vh !important;
+}
+
+.areaContents .v-text-field__details {
+  display: none;
+}
+
+.fader {
+  animation-name: fadeInAnime;
+  animation-duration: 1s;
+}
+
+@keyframes fadeInAnime {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* スマートフォン 横(ランドスケープ)以上の幅のデバイス */
+@media only screen and (min-width:481px) {
+  div#logoArea {
+    margin-left: 3em;
+  }
+}
+
+/* スマートフォン 縦(ポートレート) */
+@media only screen and (max-width:480px) {
+  div#logoArea {
+    margin-left: 2em;
+  }
+
+  div#logoArea>img {
+    width: 90%;
+  }
+}

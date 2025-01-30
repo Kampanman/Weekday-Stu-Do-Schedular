@@ -1,0 +1,50 @@
+@charset "utf-8";
+
+/* [pages/ownMyPage/settings.php]に適用するstyle */
+body, #vueArea>.v-application, .dialog>div {
+  background-color: #ffe2ed !important;
+}
+
+h1 {
+  color: #0600bf;
+  text-align: center;
+}
+
+div small {
+  font-weight: 600;
+  color: red;
+}
+
+#changePasswordBtnArea {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+#changePasswordBtnArea>label {
+  margin-right: 5px;
+}
+
+#toggleArea .toggle-button {
+  margin: 20px auto;
+}
+
+.v-btn.toggle-button.t-blue {
+  background-color: #0600bf !important;
+  color: white;
+  border: none;
+}
+
+.v-btn.toggle-button.t-white {
+  background-color: white !important;
+  color: #0600bf;
+  border: 2px solid #0600bf;
+}
+
+hr {
+  border: groove #0600bf 3px;
+}
+
+.areaContents .v-application--wrap {
+  background-color: #efebde;
+}

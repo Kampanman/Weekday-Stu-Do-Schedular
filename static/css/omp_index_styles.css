@@ -1,0 +1,49 @@
+@charset "utf-8";
+
+/* [pages/ownMyPage/index.php]に適用するstyle */
+body, #vueArea>.v-application, .dialog>div {
+  background-color: #c0edea;
+}
+
+h1 {
+  color: #00bfa5;
+  text-align: center;
+}
+
+#toggleArea .toggle-button {
+  margin: 20px auto;
+}
+
+.toggle-button.t-green {
+  background-color: #00bfa5;
+  color: white;
+  border: none;
+}
+
+.toggle-button.t-white {
+  background-color: white;
+  color: #00bfa5;
+  border: 2px solid #00bfa5;
+}
+
+hr {
+  border: groove #00bfa5 3px;
+}
+
+.areaContents .v-application--wrap, .intoCard .container {
+  background-color: #efebde;
+}
+
+/* スマートフォン 横(ランドスケープ)以上の幅のデバイス */
+@media only screen and (min-width:481px) {
+  #searchArea>div {
+      width: 52%;
+    }
+}
+
+/* スマートフォン 縦(ポートレート) */
+@media only screen and (max-width:480px) {
+  #searchArea>div {
+    width: 80%;
+  }
+}
