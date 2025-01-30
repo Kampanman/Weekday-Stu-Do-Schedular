@@ -81,7 +81,7 @@ const commonFunctions = {
 
     let processedString = inputString
       .replace(/[<>&?$@!\[\]]/g, match => charMap[match] || match)
-      .replace(/\r\n/g, '\n');
+      .replace(/\r\n|\r/g, '\n').replace(/\n{2,}/g, '\n').replace(/\n$/g, '');
 
     return processedString;
   }
