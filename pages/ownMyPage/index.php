@@ -143,6 +143,12 @@ if (!isset($_SESSION["inSession"]) || $_SESSION["contents"] != $contents_name) {
               :styles="palette"
               @send-form="openConfirm"
               @delete-selected="confirmDelete"></schedule-form>
+            <div align="center">
+              <v-btn color="success" v-text="'登録スケジュールをダウンロード'"
+                @click="dlScheduleList()" v-if="doneDl == false"></v-btn>
+              <v-btn color="error" v-text="'リロード'"
+                @click="doReload()" v-if="doneDl == true"></v-btn>
+            </div>
           </div>
         </section>
 
@@ -270,6 +276,7 @@ if (!isset($_SESSION["inSession"]) || $_SESSION["contents"] != $contents_name) {
             pd_essence: null,
             type: "update",
           },
+          doneDl: false,
           isReady: false,
           note: <?php echo json_encode($schedules) ?>,
           palette: colorPalette,
@@ -290,6 +297,41 @@ if (!isset($_SESSION["inSession"]) || $_SESSION["contents"] != $contents_name) {
           this.form.type = 'delete';
           this.form.input.id = data.input.id;
           this.dialog.instance.deleteConfirm = true;
+        },
+        dlScheduleList() {
+          // 登録スケジュール一覧を取得してcsv形式でダウンロードする
+          let data = {
+            type: 'select',
+            created_user_id: this.form.account_id,
+          };
+
+          // axiosでPHPのAPIにパラメータを送信する為、次のようにする
+          let params = new URLSearchParams();
+          Object.keys(data).forEach(function(key) {
+            params.append(key, this[key]);
+          }, data);
+
+          // ajax通信実行
+          axios
+            .post('../../server/api/scheduleCRUD.php', params, this.headerObject)
+            .then(response => {
+              const listRecords = response.data.list;
+              const csvContents = this.getCsvContents(listRecords);
+
+              // 登録スケジュール一覧を反映したファイルをダウンロードする
+              const fileTitle = `studied-list_${this.getNowDateNum()}.csv`;
+              const blob = new Blob([csvContents], {
+                type: 'text/csv'
+              });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = fileTitle;
+              a.click();
+
+              // ダウンロードボタンを非表示にしてリロードボタンを表示する
+              this.doneDl = true;
+            }).catch(error => alert("通信に失敗しました。"));
         },
         doDelete() {
           // 入力されている内容を送信する
@@ -350,6 +392,29 @@ if (!isset($_SESSION["inSession"]) || $_SESSION["contents"] != $contents_name) {
         },
         doLogout() {
           location.href = "../login.php";
+        },
+        doReload() {
+          location.reload();
+        },
+        getCsvContents(listRecords) {
+          let listRows = [];
+          listRows.push(["初回学習日,学習事項"]);
+
+          // 初回学習日とその各学習事項を取得してリストに格納する
+          listRecords.forEach(item => {
+            const rowContentsList = item.contents.split('\n');
+            const rowList = rowContentsList.forEach(contents => {
+              listRows.push(`${item.first_studied},${contents}`);
+            });
+          });
+
+          // 初回学習日と学習事項のリストをテキスト化して返す
+          return listRows.join('\n');
+        },
+        getNowDateNum() {
+          const date = new Date();
+          date.setTime(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
+          return date.toISOString().replace(/[T\:\- ]/g, '', ).substring(0, 14);
         },
         getRegistPulldowns() {
           let pdObjects = [];
