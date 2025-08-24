@@ -52,7 +52,11 @@ session_destroy();
       color: rgb(141, 0, 0);
       font-size: 25px;
       font-weight: 600;
-      -webkit-text-stroke: 0.7px white;
+      text-shadow:
+        1px 0 white,
+        -1px 0 white,
+        0 1px white,
+        0 -1px white;
     }
 
     .sloganMain span {
@@ -60,7 +64,15 @@ session_destroy();
       padding: 5px 10px;
       color: white;
       font-weight: 600;
-      -webkit-text-stroke: 2px rgb(141, 0, 0);
+      text-shadow:
+        2px 0 rgb(141, 0, 0),
+        -2px 0 rgb(141, 0, 0),
+        0 2px rgb(141, 0, 0),
+        0 -2px rgb(141, 0, 0),
+        1.5px 1.5px rgb(141, 0, 0),
+        -1.5px -1.5px rgb(141, 0, 0),
+        1.5px -1.5px rgb(141, 0, 0),
+        -1.5px 1.5px rgb(141, 0, 0);
     }
 
     .fader {
@@ -101,12 +113,24 @@ session_destroy();
     @media only screen and (max-width: 480px) {
       .sloganSub span {
         font-size: 20px;
-        -webkit-text-stroke: 0.5px white;
+        text-shadow:
+          1px 0 white,
+          -1px 0 white,
+          0 1px white,
+          0 -1px white;
       }
 
       .sloganMain span {
         font-size: 45px;
-        -webkit-text-stroke: 1.5px rgb(141, 0, 0);
+        text-shadow:
+          1.5px 0 rgb(141, 0, 0),
+          -1.5px 0 rgb(141, 0, 0),
+          0 1.5px rgb(141, 0, 0),
+          0 -1.5px rgb(141, 0, 0),
+          1px 1px rgb(141, 0, 0),
+          -1px -1px rgb(141, 0, 0),
+          1px -1px rgb(141, 0, 0),
+          -1px 1px rgb(141, 0, 0);
       }
 
       #loginFormArea {
