@@ -38,10 +38,10 @@ let scheduleViewer = Vue.component("view-schedules", {
       <v-btn :disabled="searchWord==''" :style="palette.brownFront" @click="searchScheduleTask()" v-else>検索</v-btn>
     </div>
     <p></p>
-    <div id="viewSheduleArea">
+    <div id="viewScheduleArea">
       <p v-if="isNonSearchedHit == true"
         class="fader" :style="ownStyles.nonViewableArea + ownStyles.areaMargin">表示できるスケジュールはありません</p>
-      <div id="sheduleContent" class="fader" v-else>
+      <div id="scheduleContent" class="fader" v-else>
         <dl style="margin: 1em 0;" v-for="(item, index) of filtered" v-if="item.record != null">
           <dt :style="styles.dt_border + styles.dt_blank + styles.dt_inner + 'background-color: ' + styles.dtBacks[index]">{{ item.name }}</dt>
           <dd :style="styles.dd_border + styles.dd_blank + styles.dd_inner">
@@ -53,7 +53,7 @@ let scheduleViewer = Vue.component("view-schedules", {
               <p><ul><li v-for="line of parts.contents.split('\\n')">{{ line }}</li></ul></p>
               <p v-if="parts.comment != ''">
                 <span>【備考】</span><br />
-                <span v-for="line of parts.comment.split('\\n')" style="margin-left: 1em;">{{ line }}</span>
+                <div v-for="line of parts.comment.split('\\n')" style="margin-left: 1em;">{{ line }}</div>
               </p>
             </article>
           </dd>
