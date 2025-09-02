@@ -113,6 +113,23 @@ try {
     $res['type'] = "success";
     $res['message'] = "ログインユーザーの登録スケジュールのIDリストを取得しました。";
     $res['list'] = $ids;
+  } else if ($_POST['type'] == 'view') {
+    // スケジュール詳細取得
+    if (empty($_POST['id'])) throw new Exception("IDが指定されていません。");
+
+    $dataGetSql = "SELECT id, start_date, times, contents, comment, created_at FROM " . $data_table . " WHERE id = :id";
+    $stmt = $connection->prepare($dataGetSql);
+    $stmt->execute([':id' => $_POST['id']]);
+    $schedule = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($schedule) {
+      $processed_schedules = getSchedulesArray([$schedule]);
+      $res['type'] = "success";
+      $res['message'] = "スケジュール詳細を取得しました。";
+      $res['schedule'] = $processed_schedules[0]; // 配列の最初の要素を返す
+    } else {
+      throw new Exception("指定されたスケジュールが見つからないか、アクセス権がありません。");
+    }
   } else {
     // スケジュール一覧取得
     $dataGetSql = "SELECT id, start_date, times, contents, comment, created_at "
@@ -121,10 +138,8 @@ try {
     $stmt->execute([':created_user_id' => $_POST['created_user_id']]);
     $objects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // 格納用の配列を生成してそちらにオブジェクトを格納する
-    $schedules = getSchedulesArray($objects);
-    // 使用後の一覧データはクリア
-    $objects = null;
+    $schedules = getSchedulesArray($objects); // 格納用の配列を生成してそちらにオブジェクトを格納する
+    $objects = null; // 使用後の一覧データはクリア
 
     $res['type'] = "success";
     $res['message'] = "ログインユーザーの登録スケジュールを取得しました。";

@@ -18,8 +18,21 @@ let scheduleEditForm = Vue.component("schedule-form", {
         </div><br />
         <table-schedules
           :selects="selects" :palette="palette"
+          @send-view="reflectObjectForInputForm" 
           @send-update="reflectObjectForInputForm" 
           @send-delete="reflectObjectForInputForm"></table-schedules>
+        <v-app class="transparent fader" v-if="!editable && mode == 'view'">
+          <div class="mt-5">
+            <v-card-text v-if="viewData.id" class="pa-4">
+              <h2 class="mb-4">スケジュール詳細</h2>
+              <p><strong>初回学習日:&nbsp;</strong> {{ viewData.first_studied }}</p>
+              <p class="mb-1"><strong>学習内容</strong></p>
+              <pre class="pa-2 detail-box">{{ viewData.contents }}</pre>
+              <p class="mt-3 mb-1" v-if="viewData.comment"><strong>備考</strong></p>
+              <pre class="pa-2 detail-box" v-if="viewData.comment">{{ viewData.comment }}</pre>
+            </v-card-text>
+          </div>
+        </v-app>
         <v-app class="transparent" v-if="editable">
           <div id="selectorArea" :style="'width:200px;' + ownStyles.areaMargin">
             <v-select
@@ -72,6 +85,7 @@ let scheduleEditForm = Vue.component("schedule-form", {
         areaMargin: "margin: 1em;",
       },
       selectItem: '',
+      viewData: {}, // 閲覧用データを保持
     };
   },
   created: async function () {
@@ -189,9 +203,29 @@ let scheduleEditForm = Vue.component("schedule-form", {
         this.form.input.contents = data.contents;
         this.form.input.comment = data.comment;
         this.editable = true;
-      } else {
+      } else if (data.type == 'delete') {
         this.editable = false;
         this.$emit('delete-selected', this.form);
+      } else if (data.type === 'view') {
+        this.editable = false;
+        this.viewData = {}; // 表示データを一旦クリア
+        
+        // API通信で詳細データを取得
+        let params = new URLSearchParams();
+        params.append('type', 'view');
+        params.append('id', data.id);
+        params.append('created_user_id', this.form.account_id);
+
+        axios
+          .post('../../server/api/scheduleCRUD.php', params)
+          .then(response => {
+            if (response.data && response.data.type === 'success') {
+              // 取得したデータをviewDataに格納し、リアクティブに表示を更新
+              this.viewData = response.data.schedule;
+            } else {
+              alert(response.data.message || "データの取得に失敗しました。");
+            }
+          }).catch(error => alert("通信に失敗しました。"));
       }
     },
   },

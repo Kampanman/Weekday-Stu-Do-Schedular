@@ -34,16 +34,21 @@ hr {
   background-color: #efebde;
 }
 
+.detail-box {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+
 /* スマートフォン 横(ランドスケープ)以上の幅のデバイス */
 @media only screen and (min-width:481px) {
-  #searchArea>div {
-      width: 52%;
-    }
+  #searchArea>div { width: 52%; }
 }
 
 /* スマートフォン 縦(ポートレート) */
 @media only screen and (max-width:480px) {
-  #searchArea>div {
-    width: 80%;
-  }
+  #searchArea>div { width: 80%; }
 }

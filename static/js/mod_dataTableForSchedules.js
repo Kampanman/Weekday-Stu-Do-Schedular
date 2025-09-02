@@ -11,6 +11,17 @@ let dataTableForSchedules = Vue.component('table-schedules', {
         :items-per-page="10"
         class="elevation-1"
       >
+      <template v-slot:item.id="{ item }">
+        <div class="d-flex align-center">
+          <span v-text="item.id"></span>
+          &nbsp;&nbsp;
+          <i class="material-icons"
+            title="スケジュールを閲覧します"
+            :style="styles.iconsHover"
+            @click="viewSchedule(item.id)"
+          >visibility</i>
+        </div>
+      </template>
       <template v-slot:item.before_after="{ item }">
         <span v-if="item.days_diff > 0" v-text="item.days_diff + '日前'"></span>
         <span v-if="item.days_diff < 0" v-text="(item.days_diff) * -1  + '日後'"></span>
@@ -119,9 +130,12 @@ let dataTableForSchedules = Vue.component('table-schedules', {
       }
     },
     editSchedule(selected_id) {
-      // 呼び出し元にフォームのデータを送信する
       const updateInfo = this.createSendObject(selected_id, 'update');
       this.$emit('send-update', updateInfo);
+    },
+    viewSchedule(selected_id) {
+      const viewInfo = this.createSendObject(selected_id, 'view');
+      this.$emit('send-view', viewInfo);
     },
     deleteSchedule(selected_id) {
       const deleteInfo = this.createSendObject(selected_id, 'delete');
